@@ -15,7 +15,7 @@ import time
 from optparse import OptionGroup
 from optparse import OptionParser
 from string import Template
-
+# 判断当前python的版本是否为2，用于控制2和3版本的输出
 ispy2 = sys.version_info.major == 2
 
 def isWindows():
@@ -77,6 +77,12 @@ def register_signal():
     if not isWindows():
         # 声明child_process为全局变量
         global child_process
+        """
+            注册信息号，信号数为2 (signal.SIGINT）
+                表示由用户中断产生，比如ctrl+c
+            信号为3（signal.SIGQUIT）,
+            信号数为15（signal.SIGTERM）
+        """
         signal.signal(2, suicide)
         signal.signal(3, suicide)
         signal.signal(15, suicide)
@@ -266,6 +272,7 @@ if __name__ == "__main__":
     # print startCommand
     # subprocess模块使用Popen开启一个子进程，以shell的形式执行startCommand命令
     child_process = subprocess.Popen(startCommand, shell=True)
+    # 注册信号
     register_signal()
     (stdout, stderr) = child_process.communicate()
 

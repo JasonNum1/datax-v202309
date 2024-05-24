@@ -1,0 +1,65 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel": 3
+      },
+      "errorLimit": {
+        "record": 0,
+        "percentage": 0.02
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "jiwenlong",
+            "column": [
+              "user_id",
+              "user_name"
+            ],
+            "splitPk": "user_id",
+            "connection": [
+              {
+                "table": [
+                  "sys_user"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://127.0.0.1:3306/isap?useUnicode=true&characterEncoding=gbk"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "mysqlwriter",
+          "parameter": {
+            "writeMode": "insert",
+            "username": "root",
+            "password": "jiwenlong",
+            "column": [
+              "id",
+              "name"
+            ],
+            "session": [
+              "set session sql_mode='ANSI'"
+            ],
+            "preSql": [
+              "delete from test"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=gbk",
+                "table": [
+                  "test"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
