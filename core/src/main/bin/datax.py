@@ -62,13 +62,17 @@ def suicide(signum, e):
         print("[Error] DataX receive unexpected signal %d, starts to suicide." % (signum), sys.stderr)
 
     if child_process:
+        # 发送退出信号给子进程
         child_process.send_signal(signal.SIGQUIT)
+        # 等待转储数据完成
         time.sleep(1)
+        # kill子进程
         child_process.kill()
     if ispy2:
         print >> sys.stderr, "DataX Process was killed ! you did ?"
     else:
         print("DataX Process was killed ! you did ?", sys.stderr)
+    # 通过枚举定义不同的退出类型
     sys.exit(RET_STATE["KILL"])
 
 
@@ -78,8 +82,8 @@ def register_signal():
         # 声明child_process为全局变量
         global child_process
         """
-            注册信息号，信号数为2 (signal.SIGINT）
-                表示由用户中断产生，比如ctrl+c
+            注册信息
+            信号数为2 (signal.SIGINT）
             信号为3（signal.SIGQUIT）,
             信号数为15（signal.SIGTERM）
         """
